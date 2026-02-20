@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>＝LOVE大場花菜　非公式 沼落ちガイド | いろは紅葉</title>
+    <title>大場花菜さん 非公式応援ガイド | 作成：いろは紅葉</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
-    <script crossorigin="" src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin="" src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -16,8 +17,9 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#ff8c00', // Hana Orange (darkorange)
-                        secondary: '#fff7ed', // orange-50
+                        primary: '#FF8C00', // DarkOrange
+                        secondary: '#FFF5E6', // Light Orange bg
+                        accent: '#FFD700', // Gold
                     },
                     fontFamily: {
                         sans: ['"Zen Kaku Gothic New"', 'sans-serif'],
@@ -28,79 +30,70 @@
         }
     </script>
     <style>
-        body {
-            font-family: 'Zen Kaku Gothic New', sans-serif;
-            background-color: #f9fafb;
-        }
+        body { font-family: 'Zen Kaku Gothic New', sans-serif; background-color: #FFFBF5; }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .text-shadow-sm { text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
     </style>
 </head>
+
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // 大場花菜さん向けデータ
         const DATA = [
             {
                 id: 1,
                 title: "笑顔のレシピ (MV)",
                 category: "MV",
-                url: "https://www.youtube.com/watch?v=S0T8m8vP_lE",
+                url: "https://www.youtube.com/watch?v=LKwERkGBiog",
                 year: 2022,
-                comment: "大場花菜さんの初センター曲。イコラブの絆を歌った大切な一曲で、彼女の優しさと温かい笑顔が全編に溢れています。東京ドームを目指す決意の歌詞にも注目。",
-                tags: ["感動", "アイドル"]
+                comment: "大場花菜さん初センター曲！東京ドームをバックに、メンバーの絆と未来への決意を歌ったエモーショナルな名曲です。彼女の晴れやかな笑顔が眩しい一作。",
+                tags: ["センター", "感動"]
             },
             {
                 id: 2,
                 title: "ラブロケ (MV)",
                 category: "MV",
-                url: "https://www.youtube.com/watch?v=Kz488O0A53g",
+                url: "https://www.youtube.com/watch?v=u_Y91a-uILM",
                 year: 2023,
-                comment: "「はなちゃん」全開のポップでキュートなセンター曲。くるくる変わる表情と、コミカルなダンスが最高に可愛らしい一曲です。",
-                tags: ["かわいい", "アイドル"]
+                comment: "宇宙飛行士を目指して訓練に励む花菜ちゃんが可愛すぎるユニット曲。ポップでキャッチーな世界観が、彼女の明るいキャラクターにぴったりです。",
+                tags: ["センター", "かわいい"]
             },
             {
                 id: 3,
-                title: "宝物はグリーン (Live)",
-                category: "ライブ",
-                url: "https://www.youtube.com/watch?v=DOfVunXGg-U",
-                year: 2023,
-                comment: "大好きな宝塚歌劇団への愛を感じさせるような、舞台的な表現力が光るパフォーマンス。彼女のステージ上での『演じる力』が堪能できます。",
-                tags: ["表現力"]
+                title: "Sweetest girl (MV)",
+                category: "MV",
+                url: "https://www.youtube.com/watch?v=poF7fpHzGvQ",
+                year: 2019,
+                comment: "女子力全開のユニット曲。お洒落が大好きな花菜さんの魅力が詰まっています。毎日の自分を愛したくなる魔法のような楽曲。",
+                tags: ["かわいい", "お洒落"]
             },
             {
                 id: 4,
-                title: "ウィークエンドシトロン (Focus)",
-                category: "フォーカス",
-                url: "https://www.youtube.com/watch?v=P_NIn1f42H4",
+                title: "お姫様にしてよ！ (MV)",
+                category: "MV",
+                url: "https://www.youtube.com/watch?v=oCb89c0MDVk",
                 year: 2021,
-                comment: "オレンジの衣装が誰よりも似合う！ダンスの端々に現れる彼女らしいキレと、ファンサービスを忘れない明るいパフォーマンスに注目。",
-                tags: ["かわいい", "オレンジ"]
+                comment: "仕事に奮闘する女性を応援するポップなナンバー。花菜さんのくるくる変わる豊かな表情と、シアトリカルな表現力に注目！",
+                tags: ["演技", "かわいい"]
             },
             {
                 id: 5,
-                title: "「はなまる」イラストメイキング",
-                category: "バラエティ",
-                url: "https://www.youtube.com/watch?v=mYvQp5-6X4w",
-                year: 2022,
-                comment: "特技のイラストを活かした企画。プロ級の腕前でメンバーを描く様子は必見。アイドルでありクリエイターでもある彼女の多才さがわかります。",
-                tags: ["特技", "イラスト"]
+                title: "Poison Girl (MV)",
+                category: "MV",
+                url: "https://www.youtube.com/watch?v=2l7yxbJ2Eqc",
+                year: 2021,
+                comment: "少し大人っぽく、毒気のあるパフォーマンス。花菜さんの表現力の幅広さを感じられる一曲です。",
+                tags: ["カッコいい"]
             }
         ];
 
-        const CATEGORIES = ["すべて", "MV", "ライブ", "フォーカス", "バラエティ"];
-        const TAGS = ["アイドル", "かわいい", "感動", "表現力", "オレンジ"];
+        const CATEGORIES = ["すべて", "MV", "ライブ", "SNS動画", "コラボ"];
+        const TAGS = ["センター", "かわいい", "カッコいい", "演技", "感動"];
 
         const getYouTubeId = (url) => {
             try {
@@ -112,18 +105,23 @@
 
         const NavMenu = ({ activePage, setActivePage }) => {
             const menuItems = [
-                { id: 'home', label: 'はなまるガイド', icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg> },
-                { id: 'profile', label: '大場花菜とは？', icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" /></svg> },
-                { id: 'concept', label: 'サイトコンセプト', icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg> }
+                { id: 'home', label: 'はなまるガイド', icon: '💮' },
+                { id: 'profile', label: '大場花菜とは？', icon: '🧡' },
+                { id: 'concept', label: 'サイトについて', icon: '📝' },
             ];
+
             return (
-                <div className="bg-white/95 backdrop-blur-md border-t md:border-t-0 md:border-b border-gray-200 flex justify-center fixed bottom-0 left-0 w-full z-50 md:sticky md:top-0 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] md:shadow-sm pb-safe">
+                <div className="bg-white/95 backdrop-blur-md border-t md:border-t-0 md:border-b border-orange-100 flex justify-center fixed bottom-0 left-0 w-full z-50 md:sticky md:top-0 shadow-[0_-4px_10px_rgba(255,140,0,0.1)] md:shadow-sm pb-safe">
                     <div className="flex w-full max-w-md md:max-w-2xl justify-between px-2">
                         {menuItems.map(item => (
-                            <button key={item.id} onClick={() => setActivePage(item.id)} className={`flex-1 flex flex-col items-center justify-center py-2 md:py-4 gap-1 transition-all relative ${activePage === item.id ? 'text-primary' : 'text-gray-400'}`}>
-                                <div className={`p-1.5 rounded-full ${activePage === item.id ? 'bg-primary/10' : ''}`}>{item.icon}</div>
+                            <button
+                                key={item.id}
+                                onClick={() => setActivePage(item.id)}
+                                className={`flex-1 flex flex-col items-center justify-center py-3 md:py-4 gap-1 transition-all ${activePage === item.id ? 'text-primary' : 'text-gray-400'}`}
+                            >
+                                <span className="text-xl">{item.icon}</span>
                                 <span className="text-[10px] md:text-xs font-bold">{item.label}</span>
-                                {activePage === item.id && <span className="absolute top-0 md:top-auto md:bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-1 bg-primary rounded-b-full"></span>}
+                                {activePage === item.id && <span className="absolute top-0 md:bottom-0 w-1/2 h-1 bg-primary rounded-full"></span>}
                             </button>
                         ))}
                     </div>
@@ -132,114 +130,108 @@
         };
 
         const Profile = () => (
-            <div className="p-6 md:p-10 bg-gray-50/50 min-h-[500px]">
-                <div className="max-w-3xl mx-auto bg-white rounded-3xl p-8 shadow-sm border border-gray-100 space-y-8 animate-[fadeIn_0.5s]">
-                    <div className="text-center space-y-2 border-b pb-6">
+            <div className="p-6 md:p-10 animate-[fadeIn_0.5s_ease-out]">
+                <div className="max-w-3xl mx-auto bg-white rounded-3xl p-8 shadow-sm border border-orange-100 space-y-8">
+                    <div className="text-center space-y-2 border-b border-orange-50 pb-6">
                         <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full">PROFILE</span>
-                        <h2 className="text-3xl font-bold font-rounded text-gray-800">大場 花菜 (Hana Oba)</h2>
-                        <p className="text-primary font-bold tracking-widest text-sm">＝LOVE 元気と感性の宝箱</p>
+                        <h2 className="text-3xl font-bold font-['M_PLUS_Rounded_1c'] text-gray-800">大場 花菜 (Oba Hana)</h2>
+                        <p className="text-primary font-bold tracking-widest text-sm">はなまるスマイルのクリエイターアイドル</p>
                     </div>
-                    <div className="grid gap-4 text-gray-700">
-                        <div className="flex border-b border-gray-100 pb-2"><span className="w-24 text-gray-400 font-bold">誕生日</span><span className="font-bold">2000年2月4日</span></div>
-                        <div className="flex border-b border-gray-100 pb-2"><span className="w-24 text-gray-400 font-bold">出身地</span><span className="font-bold">埼玉県</span></div>
-                        <div className="flex border-b border-gray-100 pb-2"><span className="w-24 text-gray-400 font-bold">血液型</span><span className="font-bold">A型</span></div>
-                        <div className="flex border-b border-gray-100 pb-2"><span className="w-24 text-gray-400 font-bold">カラー</span><span className="font-bold text-orange-500">オレンジ × オレンジ 🧡</span></div>
-                        <div className="flex border-b border-gray-100 pb-2"><span className="w-24 text-gray-400 font-bold">特技</span><span className="font-bold">イラスト、書道、宝塚の知識</span></div>
-                    </div>
-                    <div className="bg-orange-50 p-6 rounded-xl mt-8 italic text-sm text-gray-600 leading-relaxed">
-                        「今日もあなたに、はなまるを！」のキャッチフレーズでおなじみ。
-                        イコラブのムードメーカーであり、圧倒的な演劇的表現力を持つパフォーマー。
-                        自他共に認める宝塚歌劇団の大ファンで、そのセンスは自身のダンスやブログの構成力、
-                        さらには「はなまるイラスト」としてのクリエイティブ活動にも活かされています。
+                    <div className="grid gap-4 md:grid-cols-2">
+                        <div className="space-y-4">
+                            <p className="bg-orange-50 p-4 rounded-xl text-sm leading-relaxed">
+                                イコラブのムードメーカーであり、圧倒的なシアトリカル表現の持ち主。イラストレーターとしても活躍し、自身のブログやグッズデザインでも才能を発揮しています。
+                            </p>
+                            <div className="text-sm space-y-2">
+                                <div className="flex justify-between border-b border-gray-50 pb-1"><span>生年月日</span><span className="font-bold">2000年2月4日</span></div>
+                                <div className="flex justify-between border-b border-gray-50 pb-1"><span>出身地</span><span className="font-bold">埼玉県</span></div>
+                                <div className="flex justify-between border-b border-gray-50 pb-1"><span>ペンライト</span><span className="font-bold text-orange-500">オレンジ×オレンジ</span></div>
+                            </div>
+                        </div>
+                        <div className="bg-accent/5 p-6 rounded-2xl border border-accent/20">
+                            <h3 className="font-bold text-primary mb-3 flex items-center gap-2">💮 推しポイント</h3>
+                            <ul className="text-xs text-gray-600 space-y-2 list-disc pl-4">
+                                <li>「はなまる」なポジティブ精神</li>
+                                <li>宝塚歌劇団仕込みの舞台表現力</li>
+                                <li>プロ級のイラスト＆デザインセンス</li>
+                                <li>心に刺さるエッセイのようなブログ</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         );
 
         const Concept = () => (
-            <div className="p-6 md:p-10 bg-gray-50/50 min-h-[500px]">
-                <div className="max-w-3xl mx-auto space-y-8 animate-[fadeIn_0.5s]">
-                    <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
-                        <h2 className="text-xl font-bold font-rounded text-gray-800 mb-4 flex items-center gap-2">サイトの目的</h2>
-                        <p className="text-gray-600 text-sm leading-7">
-                            このサイトは、＝LOVEのメンバー<strong className="text-primary">大場花菜さん</strong>の多才な魅力を一人でも多くの人に知ってもらうための非公式布教ガイドです。<br/>
-                            「笑顔のレシピ」でファンを涙させ、「ラブロケ」で最高にハッピーにする。そんな彼女のパフォーマンスに最短距離で触れていただくことを目的としています。
+            <div className="p-6 md:p-10 animate-[fadeIn_0.5s_ease-out] space-y-8">
+                <div className="max-w-3xl mx-auto bg-white rounded-3xl p-8 shadow-sm border border-orange-100">
+                    <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">💮 サイトのコンセプト</h2>
+                    <p className="text-sm text-gray-600 leading-relaxed mb-6">
+                        このサイトは、大場花菜さんの「表現者」としての素晴らしさをより多くの方に知っていただくための非公式ガイドです。彼女が届けてくれる「はなまる」な毎日を、皆さんと共有したいという想いで運営しています。
+                    </p>
+                    
+                    <div className="bg-gradient-to-br from-primary to-accent p-6 rounded-3xl text-white shadow-lg">
+                        <h3 className="font-bold text-lg mb-2">Creator: いろは紅葉</h3>
+                        <p className="text-sm opacity-90 mb-4">
+                            花菜さんの笑顔と才能に救われている一ファンです。日々の推し事やサイトの更新情報はXでも発信しています。
                         </p>
-                    </div>
-                    <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
-                        <h2 className="text-xl font-bold font-rounded text-gray-800 mb-4">作成者</h2>
-                        <p className="text-gray-600 text-sm"><strong>いろは紅葉</strong> (@iohana_momiji)</p>
+                        <a href="https://twitter.com/iohana_momiji" target="_blank" className="inline-block bg-white text-primary font-bold px-6 py-2 rounded-full hover:scale-105 transition-transform">
+                            Follow @iohana_momiji
+                        </a>
                     </div>
                 </div>
             </div>
         );
 
-        const FilterModal = ({ isOpen, onClose, activeCategory, setActiveCategory, activeTag, setActiveTag }) => {
-            if (!isOpen) return null;
-            return (
-                <div className="fixed inset-0 z-50 flex items-end justify-center">
-                    <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose}></div>
-                    <div className="bg-white rounded-t-3xl w-full max-w-md p-6 z-10 animate-[slideUp_0.3s_ease-out]">
-                        <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6"></div>
-                        <div className="space-y-6">
-                            <div>
-                                <h3 className="text-sm font-bold text-gray-400 mb-3">カテゴリー</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {CATEGORIES.map(cat => (
-                                        <button key={cat} onClick={() => setActiveCategory(cat)} className={`px-4 py-2 rounded-full text-xs font-bold ${activeCategory === cat ? "bg-primary text-white" : "bg-gray-100 text-gray-500"}`}>{cat}</button>
-                                    ))}
-                                </div>
-                            </div>
-                            <div>
-                                <h3 className="text-sm font-bold text-gray-400 mb-3">タグ</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {TAGS.map(tag => (
-                                        <button key={tag} onClick={() => setActiveTag(activeTag === tag ? null : tag)} className={`px-4 py-2 rounded-full text-xs font-bold border ${activeTag === tag ? "bg-gray-800 text-white" : "bg-white text-gray-600"}`}>#{tag}</button>
-                                    ))}
-                                </div>
-                            </div>
-                            <button onClick={onClose} className="w-full bg-primary text-white font-bold py-4 rounded-xl shadow-lg">閉じる</button>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
         const HomeContent = ({ data, activeCategory, setActiveCategory, activeTag, setActiveTag, toggleWatched, isWatched }) => {
             const [isFilterOpen, setIsFilterOpen] = useState(false);
             return (
-                <div className="relative min-h-[calc(100vh-200px)]">
-                    <main className="p-4 md:p-6 pb-24">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {data.map(item => {
-                                const videoId = getYouTubeId(item.url);
-                                const watched = isWatched(item.id);
-                                return (
-                                    <div key={item.id} className={`bg-white rounded-2xl border ${watched ? 'border-primary/30' : 'border-gray-100'} overflow-hidden shadow-sm hover:shadow-md transition-all`}>
-                                        <div className="relative aspect-video">
-                                            <img src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`} className={`w-full h-full object-cover ${watched ? 'grayscale-[50%]' : ''}`} alt={item.title}/>
-                                            {watched && <div className="absolute top-2 right-2 bg-primary text-white text-[10px] font-bold px-2 py-1 rounded-full">視聴済み</div>}
-                                        </div>
-                                        <div className="p-5">
-                                            <div className="flex gap-2 mb-2">
-                                                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-orange-100 text-orange-600">{item.category}</span>
-                                                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-gray-100 text-gray-500">{item.year}年</span>
-                                            </div>
-                                            <h3 className="text-lg font-bold mb-2 text-gray-800">{item.title}</h3>
-                                            <p className="text-xs text-gray-600 mb-4 leading-relaxed">{item.comment}</p>
-                                            <a href={item.url} target="_blank" onClick={() => toggleWatched(item.id)} className="block w-full text-center border-2 border-primary text-primary font-bold py-2 rounded-xl hover:bg-primary hover:text-white transition-colors">動画を見る</a>
-                                        </div>
+                <main className="p-4 md:p-6 pb-24">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {data.map(item => (
+                            <div key={item.id} className={`bg-white rounded-3xl border ${isWatched(item.id) ? 'border-primary/20 bg-orange-50/20' : 'border-orange-50'} overflow-hidden shadow-sm hover:shadow-xl transition-all`}>
+                                <div className="relative aspect-video">
+                                    <img src={`https://img.youtube.com/vi/${getYouTubeId(item.url)}/hqdefault.jpg`} className="w-full h-full object-cover" />
+                                    {isWatched(item.id) && <div className="absolute top-2 right-2 bg-primary text-white text-[10px] px-2 py-1 rounded-full">💮 確認済み</div>}
+                                </div>
+                                <div className="p-6">
+                                    <div className="flex gap-2 mb-2">
+                                        <span className="text-[10px] bg-primary text-white px-2 py-0.5 rounded-full">{item.category}</span>
+                                        <span className="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">{item.year}年</span>
                                     </div>
-                                );
-                            })}
-                        </div>
-                    </main>
-                    <button onClick={() => setIsFilterOpen(true)} className="fixed bottom-24 right-4 bg-gray-900 text-white rounded-full px-6 py-4 shadow-xl z-40 flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" /></svg>
-                        絞り込み
+                                    <h3 className="font-bold text-lg mb-2 line-clamp-1">{item.title}</h3>
+                                    <p className="text-xs text-gray-500 line-clamp-3 mb-4">{item.comment}</p>
+                                    <a href={item.url} target="_blank" onClick={() => toggleWatched(item.id)} className="block w-full text-center py-3 bg-white border-2 border-primary text-primary font-bold rounded-2xl hover:bg-primary hover:text-white transition-all">
+                                        動画を見に行く
+                                    </a>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    {/* FAB */}
+                    <button onClick={() => setIsFilterOpen(true)} className="fixed bottom-24 right-4 bg-gray-900 text-white p-4 rounded-full shadow-2xl z-50">
+                        🔍 絞り込み
                     </button>
-                    <FilterModal isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)} activeCategory={activeCategory} setActiveCategory={setActiveCategory} activeTag={activeTag} setActiveTag={setActiveTag} />
-                </div>
+                    {isFilterOpen && (
+                        <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40 backdrop-blur-sm" onClick={() => setIsFilterOpen(false)}>
+                            <div className="bg-white w-full max-w-md p-6 rounded-t-3xl space-y-6" onClick={e => e.stopPropagation()}>
+                                <div>
+                                    <h3 className="text-xs font-bold text-gray-400 mb-2 uppercase">Category</h3>
+                                    <div className="flex flex-wrap gap-2">
+                                        {CATEGORIES.map(c => <button key={c} onClick={() => setActiveCategory(c)} className={`px-4 py-2 rounded-full text-xs font-bold ${activeCategory === c ? 'bg-primary text-white' : 'bg-gray-100'}`}>{c}</button>)}
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 className="text-xs font-bold text-gray-400 mb-2 uppercase">Tags</h3>
+                                    <div className="flex flex-wrap gap-2">
+                                        {TAGS.map(t => <button key={t} onClick={() => setActiveTag(activeTag === t ? null : t)} className={`px-4 py-2 rounded-full text-xs font-bold ${activeTag === t ? 'bg-gray-800 text-white' : 'bg-gray-100'}`}>#{t}</button>)}
+                                    </div>
+                                </div>
+                                <button onClick={() => setIsFilterOpen(false)} className="w-full py-4 bg-primary text-white font-bold rounded-2xl">閉じる</button>
+                            </div>
+                        </div>
+                    )}
+                </main>
             );
         };
 
@@ -247,42 +239,40 @@
             const [activePage, setActivePage] = useState("home");
             const [activeCategory, setActiveCategory] = useState("すべて");
             const [activeTag, setActiveTag] = useState(null);
-            const [watchedIds, setWatchedIds] = useState(() => JSON.parse(localStorage.getItem('hana_watched') || '[]'));
+            const [watchedIds, setWatchedIds] = useState(() => JSON.parse(localStorage.getItem('watched_hana') || '[]'));
 
-            const toggleWatched = (id) => {
-                const updated = watchedIds.includes(id) ? watchedIds : [...watchedIds, id];
-                setWatchedIds(updated);
-                localStorage.setItem('hana_watched', JSON.stringify(updated));
-            };
+            useEffect(() => { localStorage.setItem('watched_hana', JSON.stringify(watchedIds)); }, [watchedIds]);
 
-            const filteredData = DATA.filter(item => (activeCategory === "すべて" || item.category === activeCategory) && (!activeTag || item.tags.includes(activeTag)));
-            const progress = Math.round((watchedIds.length / DATA.length) * 100);
+            const toggleWatched = (id) => { if (!watchedIds.includes(id)) setWatchedIds([...watchedIds, id]); };
+            const isWatched = (id) => watchedIds.includes(id);
+            const score = Math.round((watchedIds.length / DATA.length) * 100);
+
+            const filteredData = DATA.filter(d => (activeCategory === "すべて" || d.category === activeCategory) && (!activeTag || d.tags.includes(activeTag)));
 
             return (
-                <div className="min-h-screen bg-white max-w-md md:max-w-6xl mx-auto shadow-2xl flex flex-col transition-all">
-                    <header className="bg-gradient-to-br from-orange-400 to-orange-600 text-white p-8 text-center relative overflow-hidden">
-                        <div className="relative z-10">
-                            <h1 className="text-3xl md:text-5xl font-extrabold tracking-widest font-rounded mb-2">ようこそ！<span className="text-yellow-200">はなまる沼</span></h1>
-                            <p className="text-xs md:text-sm font-bold opacity-90">＝LOVE 大場花菜 非公式沼落ちガイド</p>
-                        </div>
-                        <div className="absolute top-4 right-4 text-right">
-                            <span className="text-[10px] font-bold">沼落ち度</span>
-                            <div className="w-20 h-2 bg-black/20 rounded-full mt-1 overflow-hidden">
-                                <div className="h-full bg-yellow-300 transition-all duration-1000" style={{width: `${progress}%`}}></div>
+                <div className="min-h-screen max-w-6xl mx-auto bg-white flex flex-col md:my-8 md:rounded-3xl shadow-2xl overflow-hidden">
+                    <header className="bg-gradient-to-br from-primary via-[#FF7F50] to-accent p-8 text-white relative text-center">
+                        <div className="absolute top-4 right-4 flex flex-col items-end">
+                            <span className="text-[10px] font-bold text-shadow-sm">はなまる獲得度</span>
+                            <div className="flex items-center gap-2">
+                                <div className="w-20 h-2 bg-black/20 rounded-full overflow-hidden">
+                                    <div className="h-full bg-accent shadow-[0_0_10px_white]" style={{ width: `${score}%` }}></div>
+                                </div>
+                                <span className="text-xs font-bold">{score}%</span>
                             </div>
-                            <span className="text-xs font-bold">{progress}%</span>
                         </div>
+                        <h1 className="text-3xl md:text-5xl font-black font-['M_PLUS_Rounded_1c'] mb-2 drop-shadow-md">今日も明日もはなまる！💮</h1>
+                        <p className="text-xs md:text-sm font-bold bg-white/20 inline-block px-4 py-1 rounded-full backdrop-blur-md border border-white/30">＝LOVE 大場花菜 非公式布教ガイド | by いろは紅葉</p>
                     </header>
-
                     <NavMenu activePage={activePage} setActivePage={setActivePage} />
-                    
-                    {activePage === 'home' && <HomeContent data={filteredData} activeCategory={activeCategory} setActiveCategory={setActiveCategory} activeTag={activeTag} setActiveTag={setActiveTag} toggleWatched={toggleWatched} isWatched={id => watchedIds.includes(id)} />}
-                    {activePage === 'profile' && <Profile />}
-                    {activePage === 'concept' && <Concept />}
-
-                    <footer className="p-6 pb-24 md:pb-6 text-center text-[10px] text-gray-400 border-t bg-gray-50">
-                        <p>当サイトはファンによる非公式サイトであり、権利者様とは関係ありません。</p>
-                        <p>© 2026 Created by いろは紅葉 (@iohana_momiji)</p>
+                    <div className="flex-1 bg-[#FFFBF5]">
+                        {activePage === 'home' && <HomeContent data={filteredData} activeCategory={activeCategory} setActiveCategory={setActiveCategory} activeTag={activeTag} setActiveTag={setActiveTag} toggleWatched={toggleWatched} isWatched={isWatched} />}
+                        {activePage === 'profile' && <Profile />}
+                        {activePage === 'concept' && <Concept />}
+                    </div>
+                    <footer className="p-8 text-center text-[10px] text-gray-400 bg-gray-50">
+                        <p>© 2026 Hana Oba Fan Guide | Created by いろは紅葉 (@iohana_momiji)</p>
+                        <p className="mt-2">当サイトは個人によるファンサイトです。公式とは一切関係ありません。</p>
                     </footer>
                 </div>
             );
@@ -292,4 +282,5 @@
         root.render(<App />);
     </script>
 </body>
+
 </html>
