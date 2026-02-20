@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大場花菜さん 非公式応援ガイド | 作成：いろは紅葉</title>
+    <title>IORI & HANA | Premium Archive - Produced by いろは紅葉</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700;1,900&family=Noto+Serif+JP:wght@600;900&family=Noto+Sans+JP:wght@300;700&display=swap" rel="stylesheet">
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -17,262 +16,214 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#FF8C00', // DarkOrange
-                        secondary: '#FFF5E6', // Light Orange bg
-                        accent: '#FFD700', // Gold
+                        iori: '#9333ea', 
+                        hana: '#FF8C00', 
+                        deep: '#0a0a0a',
+                        canvas: '#fcfcfc',
+                        gold: '#C5A059'
                     },
                     fontFamily: {
-                        sans: ['"Zen Kaku Gothic New"', 'sans-serif'],
-                        rounded: ['"M PLUS Rounded 1c"', 'sans-serif'],
+                        serif: ['"Noto Serif JP"', 'serif'],
+                        display: ['"Playfair Display"', 'serif'],
+                        sans: ['"Noto Sans JP"', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
     <style>
-        body { font-family: 'Zen Kaku Gothic New', sans-serif; background-color: #FFFBF5; }
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .text-shadow-sm { text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        body { background-color: #fcfcfc; color: #0a0a0a; font-family: 'Noto Sans JP', sans-serif; line-height: 1.8; }
+        .glass-nav { background: rgba(252, 252, 252, 0.95); backdrop-filter: blur(25px); }
+        .dual-bg { background: linear-gradient(90deg, rgba(147,51,234,0.03) 0%, rgba(255,140,0,0.03) 100%); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .thumb-sharp { image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #9333ea, #FF8C00); border-radius: 10px; }
+        .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        /* シグネチャー・リンク */
+        .signature-link { transition: all 0.5s ease; position: relative; }
+        .signature-link:hover { color: #FF8C00; text-shadow: 0 0 20px rgba(255, 140, 0, 0.2); }
     </style>
 </head>
-
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        const DATA = [
-            {
-                id: 1,
-                title: "笑顔のレシピ (MV)",
-                category: "MV",
-                url: "https://www.youtube.com/watch?v=LKwERkGBiog",
-                year: 2022,
-                comment: "大場花菜さん初センター曲！東京ドームをバックに、メンバーの絆と未来への決意を歌ったエモーショナルな名曲です。彼女の晴れやかな笑顔が眩しい一作。",
-                tags: ["センター", "感動"]
-            },
-            {
-                id: 2,
-                title: "ラブロケ (MV)",
-                category: "MV",
-                url: "https://www.youtube.com/watch?v=u_Y91a-uILM",
-                year: 2023,
-                comment: "宇宙飛行士を目指して訓練に励む花菜ちゃんが可愛すぎるユニット曲。ポップでキャッチーな世界観が、彼女の明るいキャラクターにぴったりです。",
-                tags: ["センター", "かわいい"]
-            },
-            {
-                id: 3,
-                title: "Sweetest girl (MV)",
-                category: "MV",
-                url: "https://www.youtube.com/watch?v=poF7fpHzGvQ",
-                year: 2019,
-                comment: "女子力全開のユニット曲。お洒落が大好きな花菜さんの魅力が詰まっています。毎日の自分を愛したくなる魔法のような楽曲。",
-                tags: ["かわいい", "お洒落"]
-            },
-            {
-                id: 4,
-                title: "お姫様にしてよ！ (MV)",
-                category: "MV",
-                url: "https://www.youtube.com/watch?v=oCb89c0MDVk",
-                year: 2021,
-                comment: "仕事に奮闘する女性を応援するポップなナンバー。花菜さんのくるくる変わる豊かな表情と、シアトリカルな表現力に注目！",
-                tags: ["演技", "かわいい"]
-            },
-            {
-                id: 5,
-                title: "Poison Girl (MV)",
-                category: "MV",
-                url: "https://www.youtube.com/watch?v=2l7yxbJ2Eqc",
-                year: 2021,
-                comment: "少し大人っぽく、毒気のあるパフォーマンス。花菜さんの表現力の幅広さを感じられる一曲です。",
-                tags: ["カッコいい"]
-            }
+        const VIDEO_DATA = [
+            // 野口衣織 Selection
+            { id: 1, member: 'iori', type: "MV", title: "呪って呪って", url: "cyRZGtNx_a4", comment: "冷徹な眼光と魂を宿した指先の表現。イコラブが持つ表現力の深淵を定義し直した衝撃作。" },
+            { id: 2, member: 'iori', type: "Live", title: "狂想カタストロフィ", url: "bovO70Ml0gE", comment: "孤独を芸術へ。アリーナの真ん中で独り舞う姿は、アイドルの枠を超えた一つの伝説。" },
+            { id: 3, member: 'iori', type: "MV", title: "手遅れcaution", url: "w0N0TiOlAY0", comment: "憑依型パフォーマーとしての名を世に知らしめた原点。一瞬で空気を掌握する気迫。" },
+            { id: 4, member: 'iori', type: "MV", title: "拝啓 貴方様", url: "PFBhWKdjBTQ", comment: "昭和歌謡の哀愁を纏うソロ。唯一無二の歌唱力と、引きずり込まれるような妖艶な世界。" },
+            { id: 5, member: 'iori', type: "Live", title: "だからとて", url: "khSDmjXGjkE", comment: "切なさを叫ぶ。生歌ならではの熱量が魂を揺さぶり、聴く者を衣織沼へ深く引き摺り込む。" },
+            { id: 6, member: 'iori', type: "MV", title: "君と私の歌", url: "juImxVpogRY", comment: "ファンへの愛を綴るセンター曲。力強さと優しさが溶け合う、彼女が持つ王道の輝き。" },
+            { id: 7, member: 'iori', type: "MV", title: "Be Selfish", url: "suf7S4AKdmY", comment: "自分らしさの肯定。凛とした佇まいと強いメッセージ性を描き出す現代的な美。" },
+            { id: 8, member: 'iori', type: "Live", title: "呪って呪って (TIMLESS)", url: "T8zqbIvO_9M", comment: "会場全体を圧倒する覇気。ライブでこそ輝く、野生的なまでの気迫が堪能できる。" },
+            { id: 9, member: 'iori', type: "Focus", title: "絶対アイドル辞めないで", url: "olmZqgAYUTk", comment: "全編にわたって絵になる、究極のアイドルとしての姿を捉えた名映像。" },
+            { id: 10, member: 'iori', type: "Cover", title: "うっせぇわ", url: "rMT4X8zR7qY", comment: "変幻自在な声の魔術師としての真骨頂。一度聴けば逃げられない圧倒的な歌唱。" },
+            { id: 11, member: 'iori', type: "Live", title: "手遅れcaution (横浜アリーナ)", url: "uMpEyaRmiy8", comment: "伝説の落ちサビ。一瞬の静寂が生む圧倒的カタルシスは、生歌の強さを物語る。" },
+            { id: 12, member: 'iori', type: "Dance", title: "Queens", url: "Pyts1pc0u1A", comment: "覇者の風格を纏う。ダンスのキレと重圧感のある視線が、観る者を世界観へ引き込む。" },
+            { id: 13, member: 'iori', type: "MV", title: "虹の素", url: "qoPqgiQVhok", comment: "歌声がぶつかり合い、溶け合うエモーショナルな旋律。いかりんぐの絆が結実した一曲。" },
+            { id: 14, member: 'iori', type: "Live", title: "記憶のどこかで", url: "FCti36ZBQBU", comment: "初期の名曲から溢れる情熱。成長し続ける彼女のパフォーマンスの歴史を感じるステージ。" },
+            { id: 15, member: 'iori', type: "Dance", title: "惑星ループ", url: "28P2ZI-aweU", comment: "ギャップの極致。クールな彼女が見せる至高の可愛さに撃ち抜かれる名場面。" },
+
+            // 大場花菜 Selection
+            { id: 16, member: 'hana', type: "MV", title: "笑顔のレシピ", url: "LKwERkGBiog", comment: "初センター。東京ドームへの約束を胸に、メンバーとの絆を歌い上げた彼女の聖域。" },
+            { id: 17, member: 'hana', type: "MV", title: "ラブロケ", url: "u_Y91a-uILM", comment: "宇宙的可愛さの炸裂。ポップな色彩と表情管理が完璧にマッチしたクリエイティブな一曲。" },
+            { id: 18, member: 'hana', type: "MV", title: "Sweetest girl", url: "poF7fpHzGvQ", comment: "女子力の魔法。おしゃれを愛する感性が息づく、ガーリーで愛らしい世界観。" },
+            { id: 19, member: 'hana', type: "MV", title: "お姫様にしてよ！", url: "oCb89c0MDVk", comment: "全女子への応援歌。シアトリカルな演技力が光り、コメディエンヌの才能も堪能できる。" },
+            { id: 20, member: 'hana', type: "MV", title: "Poison Girl", url: "2l7yxbJ2Eqc", comment: "甘美な毒。大人びた表現で見せるアーティストとしての新たな一面。指先の所作が美しい。" },
+            { id: 21, member: 'hana', type: "MV", title: "狂想カタストロフィ", url: "RG_B3gfOzLo", comment: "シアトリカルの深淵。一曲の中で一人の人生を演じきる。宝塚への愛が昇華された極み。" },
+            { id: 22, member: 'hana', type: "Live", title: "祝祭 (6th Anniv.)", url: "497KgIJTgSs", comment: "執事姿での名演。舞台人としての本領発揮。ファンを虜にした圧巻の役作りをその目に。" },
+            { id: 23, member: 'hana', type: "Live", title: "ナツマトペ (Live)", url: "J5M3vX9ioIU", comment: "会場を幸せにするハッピーオーラ。太陽のような彼女がいるだけで、景色が輝き出す。" },
+            { id: 24, member: 'hana', type: "Focus", title: "とくべチュ、して", url: "XzpKlwETET4", comment: "最新のはなまる。一瞬のウィンクも見逃せない、可愛さの過剰摂取注意報。" },
+            { id: 25, member: 'hana', type: "Dance", title: "呪って呪って (Practice)", url: "K-3LQ9A2ecY", comment: "正確無比なリズム感。身体の止めと流しが描くシルエットの美しさは職人技。" },
+            { id: 26, member: 'hana', type: "Dance", title: "この空がトリガー", url: "ENs8yzQe7uk", comment: "指先まで神経が通った流麗なダンス。曲の物語を全身で読み解く、真の表現者の姿。" },
+            { id: 27, member: 'hana', type: "Live", title: "ラブクリエイト", url: "Ez3V5ipHdsI", comment: "多幸感の結晶。オレンジの海が最も似合う、メンバーとファンを愛する彼女の素顔。" },
+            { id: 28, member: 'hana', type: "Live", title: "超特急逃走中", url: "NjQPFUVKMCQ", comment: "全力のエンターテインメント。疾走感の中で光る最高の笑顔。観る者の心も晴れ渡る。" },
+            { id: 29, member: 'hana', type: "MV", title: "ドライブデート都内", url: "Y3aRUM8ebKE", comment: "お洒落なセンスと日常を彩る可愛さが詰まった一作。都内の景色に溶け込む姿が美しい。" },
+            { id: 30, member: 'hana', type: "MV", title: "ズッ友案件", url: "L7QUReMgJBY", comment: "ムードメーカーとしての温かさ。最高のハッピーを共有する、多幸感溢れる名曲。" }
         ];
 
-        const CATEGORIES = ["すべて", "MV", "ライブ", "SNS動画", "コラボ"];
-        const TAGS = ["センター", "かわいい", "カッコいい", "演技", "感動"];
-
-        const getYouTubeId = (url) => {
-            try {
-                const urlObj = new URL(url);
-                if (urlObj.hostname === "youtu.be") return urlObj.pathname.slice(1);
-                return urlObj.searchParams.get("v");
-            } catch (e) { return null; }
-        };
-
-        const NavMenu = ({ activePage, setActivePage }) => {
-            const menuItems = [
-                { id: 'home', label: 'はなまるガイド', icon: '💮' },
-                { id: 'profile', label: '大場花菜とは？', icon: '🧡' },
-                { id: 'concept', label: 'サイトについて', icon: '📝' },
-            ];
-
+        const HighResThumbnail = ({ videoId, title }) => {
+            const [imgSrc, setImgSrc] = useState(`https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`);
             return (
-                <div className="bg-white/95 backdrop-blur-md border-t md:border-t-0 md:border-b border-orange-100 flex justify-center fixed bottom-0 left-0 w-full z-50 md:sticky md:top-0 shadow-[0_-4px_10px_rgba(255,140,0,0.1)] md:shadow-sm pb-safe">
-                    <div className="flex w-full max-w-md md:max-w-2xl justify-between px-2">
-                        {menuItems.map(item => (
-                            <button
-                                key={item.id}
-                                onClick={() => setActivePage(item.id)}
-                                className={`flex-1 flex flex-col items-center justify-center py-3 md:py-4 gap-1 transition-all ${activePage === item.id ? 'text-primary' : 'text-gray-400'}`}
-                            >
-                                <span className="text-xl">{item.icon}</span>
-                                <span className="text-[10px] md:text-xs font-bold">{item.label}</span>
-                                {activePage === item.id && <span className="absolute top-0 md:bottom-0 w-1/2 h-1 bg-primary rounded-full"></span>}
-                            </button>
-                        ))}
-                    </div>
+                <div className="relative aspect-video overflow-hidden bg-zinc-200">
+                    <img src={imgSrc} alt={title} loading="lazy" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 thumb-sharp"
+                        onError={() => { if (!imgSrc.includes('hqdefault')) setImgSrc(`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`); }} />
                 </div>
-            );
-        };
-
-        const Profile = () => (
-            <div className="p-6 md:p-10 animate-[fadeIn_0.5s_ease-out]">
-                <div className="max-w-3xl mx-auto bg-white rounded-3xl p-8 shadow-sm border border-orange-100 space-y-8">
-                    <div className="text-center space-y-2 border-b border-orange-50 pb-6">
-                        <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full">PROFILE</span>
-                        <h2 className="text-3xl font-bold font-['M_PLUS_Rounded_1c'] text-gray-800">大場 花菜 (Oba Hana)</h2>
-                        <p className="text-primary font-bold tracking-widest text-sm">はなまるスマイルのクリエイターアイドル</p>
-                    </div>
-                    <div className="grid gap-4 md:grid-cols-2">
-                        <div className="space-y-4">
-                            <p className="bg-orange-50 p-4 rounded-xl text-sm leading-relaxed">
-                                イコラブのムードメーカーであり、圧倒的なシアトリカル表現の持ち主。イラストレーターとしても活躍し、自身のブログやグッズデザインでも才能を発揮しています。
-                            </p>
-                            <div className="text-sm space-y-2">
-                                <div className="flex justify-between border-b border-gray-50 pb-1"><span>生年月日</span><span className="font-bold">2000年2月4日</span></div>
-                                <div className="flex justify-between border-b border-gray-50 pb-1"><span>出身地</span><span className="font-bold">埼玉県</span></div>
-                                <div className="flex justify-between border-b border-gray-50 pb-1"><span>ペンライト</span><span className="font-bold text-orange-500">オレンジ×オレンジ</span></div>
-                            </div>
-                        </div>
-                        <div className="bg-accent/5 p-6 rounded-2xl border border-accent/20">
-                            <h3 className="font-bold text-primary mb-3 flex items-center gap-2">💮 推しポイント</h3>
-                            <ul className="text-xs text-gray-600 space-y-2 list-disc pl-4">
-                                <li>「はなまる」なポジティブ精神</li>
-                                <li>宝塚歌劇団仕込みの舞台表現力</li>
-                                <li>プロ級のイラスト＆デザインセンス</li>
-                                <li>心に刺さるエッセイのようなブログ</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-
-        const Concept = () => (
-            <div className="p-6 md:p-10 animate-[fadeIn_0.5s_ease-out] space-y-8">
-                <div className="max-w-3xl mx-auto bg-white rounded-3xl p-8 shadow-sm border border-orange-100">
-                    <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">💮 サイトのコンセプト</h2>
-                    <p className="text-sm text-gray-600 leading-relaxed mb-6">
-                        このサイトは、大場花菜さんの「表現者」としての素晴らしさをより多くの方に知っていただくための非公式ガイドです。彼女が届けてくれる「はなまる」な毎日を、皆さんと共有したいという想いで運営しています。
-                    </p>
-                    
-                    <div className="bg-gradient-to-br from-primary to-accent p-6 rounded-3xl text-white shadow-lg">
-                        <h3 className="font-bold text-lg mb-2">Creator: いろは紅葉</h3>
-                        <p className="text-sm opacity-90 mb-4">
-                            花菜さんの笑顔と才能に救われている一ファンです。日々の推し事やサイトの更新情報はXでも発信しています。
-                        </p>
-                        <a href="https://twitter.com/iohana_momiji" target="_blank" className="inline-block bg-white text-primary font-bold px-6 py-2 rounded-full hover:scale-105 transition-transform">
-                            Follow @iohana_momiji
-                        </a>
-                    </div>
-                </div>
-            </div>
-        );
-
-        const HomeContent = ({ data, activeCategory, setActiveCategory, activeTag, setActiveTag, toggleWatched, isWatched }) => {
-            const [isFilterOpen, setIsFilterOpen] = useState(false);
-            return (
-                <main className="p-4 md:p-6 pb-24">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {data.map(item => (
-                            <div key={item.id} className={`bg-white rounded-3xl border ${isWatched(item.id) ? 'border-primary/20 bg-orange-50/20' : 'border-orange-50'} overflow-hidden shadow-sm hover:shadow-xl transition-all`}>
-                                <div className="relative aspect-video">
-                                    <img src={`https://img.youtube.com/vi/${getYouTubeId(item.url)}/hqdefault.jpg`} className="w-full h-full object-cover" />
-                                    {isWatched(item.id) && <div className="absolute top-2 right-2 bg-primary text-white text-[10px] px-2 py-1 rounded-full">💮 確認済み</div>}
-                                </div>
-                                <div className="p-6">
-                                    <div className="flex gap-2 mb-2">
-                                        <span className="text-[10px] bg-primary text-white px-2 py-0.5 rounded-full">{item.category}</span>
-                                        <span className="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">{item.year}年</span>
-                                    </div>
-                                    <h3 className="font-bold text-lg mb-2 line-clamp-1">{item.title}</h3>
-                                    <p className="text-xs text-gray-500 line-clamp-3 mb-4">{item.comment}</p>
-                                    <a href={item.url} target="_blank" onClick={() => toggleWatched(item.id)} className="block w-full text-center py-3 bg-white border-2 border-primary text-primary font-bold rounded-2xl hover:bg-primary hover:text-white transition-all">
-                                        動画を見に行く
-                                    </a>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                    {/* FAB */}
-                    <button onClick={() => setIsFilterOpen(true)} className="fixed bottom-24 right-4 bg-gray-900 text-white p-4 rounded-full shadow-2xl z-50">
-                        🔍 絞り込み
-                    </button>
-                    {isFilterOpen && (
-                        <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40 backdrop-blur-sm" onClick={() => setIsFilterOpen(false)}>
-                            <div className="bg-white w-full max-w-md p-6 rounded-t-3xl space-y-6" onClick={e => e.stopPropagation()}>
-                                <div>
-                                    <h3 className="text-xs font-bold text-gray-400 mb-2 uppercase">Category</h3>
-                                    <div className="flex flex-wrap gap-2">
-                                        {CATEGORIES.map(c => <button key={c} onClick={() => setActiveCategory(c)} className={`px-4 py-2 rounded-full text-xs font-bold ${activeCategory === c ? 'bg-primary text-white' : 'bg-gray-100'}`}>{c}</button>)}
-                                    </div>
-                                </div>
-                                <div>
-                                    <h3 className="text-xs font-bold text-gray-400 mb-2 uppercase">Tags</h3>
-                                    <div className="flex flex-wrap gap-2">
-                                        {TAGS.map(t => <button key={t} onClick={() => setActiveTag(activeTag === t ? null : t)} className={`px-4 py-2 rounded-full text-xs font-bold ${activeTag === t ? 'bg-gray-800 text-white' : 'bg-gray-100'}`}>#{t}</button>)}
-                                    </div>
-                                </div>
-                                <button onClick={() => setIsFilterOpen(false)} className="w-full py-4 bg-primary text-white font-bold rounded-2xl">閉じる</button>
-                            </div>
-                        </div>
-                    )}
-                </main>
             );
         };
 
         const App = () => {
-            const [activePage, setActivePage] = useState("home");
-            const [activeCategory, setActiveCategory] = useState("すべて");
-            const [activeTag, setActiveTag] = useState(null);
-            const [watchedIds, setWatchedIds] = useState(() => JSON.parse(localStorage.getItem('watched_hana') || '[]'));
+            const [member, setMember] = useState('iori'); 
+            const [page, setPage] = useState('works');
+            const [watchedIori, setWatchedIori] = useState(() => JSON.parse(localStorage.getItem('watched_iori_final_v10') || '[]'));
+            const [watchedHana, setWatchedHana] = useState(() => JSON.parse(localStorage.getItem('watched_hana_final_v10') || '[]'));
 
-            useEffect(() => { localStorage.setItem('watched_hana', JSON.stringify(watchedIds)); }, [watchedIds]);
+            useEffect(() => {
+                localStorage.setItem('watched_iori_final_v10', JSON.stringify(watchedIori));
+                localStorage.setItem('watched_hana_final_v10', JSON.stringify(watchedHana));
+            }, [watchedIori, watchedHana]);
 
-            const toggleWatched = (id) => { if (!watchedIds.includes(id)) setWatchedIds([...watchedIds, id]); };
-            const isWatched = (id) => watchedIds.includes(id);
-            const score = Math.round((watchedIds.length / DATA.length) * 100);
+            const toggle = (id) => {
+                if (member === 'iori') setWatchedIori(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
+                else setWatchedHana(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
+            };
 
-            const filteredData = DATA.filter(d => (activeCategory === "すべて" || d.category === activeCategory) && (!activeTag || d.tags.includes(activeTag)));
+            const iScore = Math.round((watchedIori.length / VIDEO_DATA.filter(v => v.member === 'iori').length) * 100);
+            const hScore = Math.round((watchedHana.length / VIDEO_DATA.filter(v => v.member === 'hana').length) * 100);
+            const accent = member === 'iori' ? 'text-iori' : 'text-hana';
 
             return (
-                <div className="min-h-screen max-w-6xl mx-auto bg-white flex flex-col md:my-8 md:rounded-3xl shadow-2xl overflow-hidden">
-                    <header className="bg-gradient-to-br from-primary via-[#FF7F50] to-accent p-8 text-white relative text-center">
-                        <div className="absolute top-4 right-4 flex flex-col items-end">
-                            <span className="text-[10px] font-bold text-shadow-sm">はなまる獲得度</span>
-                            <div className="flex items-center gap-2">
-                                <div className="w-20 h-2 bg-black/20 rounded-full overflow-hidden">
-                                    <div className="h-full bg-accent shadow-[0_0_10px_white]" style={{ width: `${score}%` }}></div>
+                <div className="min-h-screen dual-bg selection:bg-deep selection:text-white">
+                    <nav className="fixed top-0 w-full z-[9999] glass-nav border-b border-zinc-100/50 px-8 py-5 flex justify-between items-center">
+                        <div className="flex items-center gap-6">
+                            <button onClick={() => setMember('iori')} className={`text-2xl font-display font-black italic tracking-tighter transition-all ${member === 'iori' ? 'text-iori scale-110' : 'opacity-20'}`}>IORI.</button>
+                            <span className="text-zinc-200">/</span>
+                            <button onClick={() => setMember('hana')} className={`text-2xl font-display font-black italic tracking-tighter transition-all ${member === 'hana' ? 'text-hana scale-110' : 'opacity-20'}`}>HANA.</button>
+                        </div>
+                        <div className="flex gap-10 text-[11px] font-bold tracking-[0.3em] uppercase">
+                            <button onClick={() => setPage('about')} className={page === 'about' ? accent : 'opacity-30'}>About</button>
+                            <button onClick={() => setPage('works')} className={page === 'works' ? accent : 'opacity-30'}>Archive</button>
+                        </div>
+                    </nav>
+
+                    <div className="fixed bottom-10 left-10 z-[50] flex flex-col gap-6 animate-in">
+                        <div className="bg-white/95 backdrop-blur-md p-5 border-l-4 border-iori shadow-xl">
+                            <div className="text-[9px] font-black text-iori tracking-widest mb-2 uppercase">Iori Depth</div>
+                            <div className="w-44 h-1 bg-zinc-100 rounded-full overflow-hidden"><div className="h-full bg-iori transition-all duration-1000" style={{width: `${iScore}%`}}></div></div>
+                            <div className="text-right text-xs font-display italic font-black mt-1 text-iori">{iScore}%</div>
+                        </div>
+                        <div className="bg-white/95 backdrop-blur-md p-5 border-l-4 border-hana shadow-xl">
+                            <div className="text-[9px] font-black text-hana tracking-widest mb-2 uppercase">Hana Bloom</div>
+                            <div className="w-44 h-1 bg-zinc-100 rounded-full overflow-hidden"><div className="h-full bg-hana transition-all duration-1000" style={{width: `${hScore}%`}}></div></div>
+                            <div className="text-right text-xs font-display italic font-black mt-1 text-hana">{hScore}%</div>
+                        </div>
+                    </div>
+
+                    <div className="container mx-auto px-6 pt-44 pb-48">
+                        {page === 'works' && (
+                            <div className="animate-in">
+                                <header className="text-center mb-36">
+                                    <span className="text-xs font-bold text-gold tracking-[0.8em] uppercase mb-6 block">Selection curated by いろは紅葉</span>
+                                    <h1 className="text-6xl md:text-9xl font-display italic font-black tracking-tighter leading-none">{member === 'iori' ? 'The Voice of Passion' : 'The Muse of Art'}</h1>
+                                </header>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-32">
+                                    {VIDEO_DATA.filter(v => v.member === member).map(v => (
+                                        <div key={v.id} className="group">
+                                            <div className="relative mb-10">
+                                                <HighResThumbnail videoId={v.url} title={v.title} />
+                                                <div className="absolute -top-5 -left-5 bg-deep text-white text-[10px] font-black px-6 py-2 tracking-widest uppercase">{v.type}</div>
+                                                <button onClick={() => toggle(v.id)} className={`absolute -bottom-6 -right-6 w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-2xl transition-all transform hover:scale-110 ${(member === 'iori' ? watchedIori : watchedHana).includes(v.id) ? (member === 'iori' ? 'bg-iori' : 'bg-hana') + ' text-white ring-8 ring-white' : 'bg-white text-zinc-300'}`}>{(member === 'iori' ? watchedIori : watchedHana).includes(v.id) ? '💮' : '＋'}</button>
+                                            </div>
+                                            <div className="space-y-6">
+                                                <h3 className={`text-3xl font-serif font-black transition-colors ${member === 'iori' ? 'group-hover:text-iori' : 'group-hover:text-hana'}`}>{v.title}</h3>
+                                                <p className="text-[15px] text-zinc-500 leading-[2.2] font-light line-clamp-3">{v.comment}</p>
+                                                <a href={`https://www.youtube.com/watch?v=${v.url}`} target="_blank" className={`inline-block text-[11px] font-black tracking-[0.3em] border-b-2 pb-1 hover:opacity-50 ${member === 'iori' ? 'border-iori' : 'border-hana'}`}>VIEW ON YOUTUBE</a>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
-                                <span className="text-xs font-bold">{score}%</span>
+                            </div>
+                        )}
+
+                        {page === 'about' && (
+                            <div className="max-w-6xl mx-auto animate-in space-y-20">
+                                <div className="bg-white p-12 md:p-24 border border-zinc-100 shadow-2xl flex flex-col md:flex-row gap-24 items-start relative overflow-hidden">
+                                    <div className={`absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-${member === 'iori' ? 'iori' : 'hana'}/10 to-transparent rounded-full blur-3xl -mr-32 -mt-32`}></div>
+                                    <div className="md:w-5/12 space-y-16 relative z-10">
+                                        <h2 className={`text-7xl font-serif font-black leading-tight ${accent}`}>{member === 'iori' ? '野口 衣織' : '大場 花菜'}<br/><span className="text-4xl text-zinc-900 opacity-10 font-sans italic tracking-tighter uppercase">{member === 'iori' ? 'Iori Noguchi' : 'Hana Oba'}</span></h2>
+                                        <ul className="space-y-8 text-sm">
+                                            <li className="flex justify-between border-b border-zinc-50 pb-4"><span className="text-gold font-bold tracking-widest uppercase">Birthday</span><span className="font-bold">{member === 'iori' ? '2000.04.26' : '2000.02.04'}</span></li>
+                                            <li className="flex justify-between border-b border-zinc-50 pb-4"><span className="text-gold font-bold tracking-widest uppercase">Birthplace</span><span className="font-bold">{member === 'iori' ? '茨城県' : '埼玉県'}</span></li>
+                                            <li className="flex justify-between border-b border-zinc-50 pb-4"><span className="text-gold font-bold tracking-widest uppercase">Color</span><span className={`font-black ${accent}`}>{member === 'iori' ? 'Purple' : 'Orange'}</span></li>
+                                        </ul>
+                                        <div className="pt-10 border-t border-zinc-50 space-y-4 text-center">
+                                            <h3 className={`text-xl font-serif font-black mb-4 ${accent}`}>Official Accounts</h3>
+                                            <div className="grid grid-cols-1 gap-4">
+                                                <a href={member === 'iori' ? 'https://twitter.com/noguchi_iori' : 'https://twitter.com/hana_oba'} target="_blank" className={`border-2 px-8 py-4 rounded-full font-black text-[11px] tracking-widest hover:text-white transition-all ${member === 'iori' ? 'border-iori text-iori hover:bg-iori' : 'border-hana text-hana hover:bg-hana'}`}>X (Twitter) →</a>
+                                                <a href={member === 'iori' ? 'https://www.instagram.com/noguchi_iori_/' : 'https://www.instagram.com/hana_oba_24/'} target="_blank" className={`border-2 px-8 py-4 rounded-full font-black text-[11px] tracking-widest hover:text-white transition-all ${member === 'iori' ? 'border-iori text-iori hover:bg-iori' : 'border-hana text-hana hover:bg-hana'}`}>Instagram →</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="md:w-7/12 text-[18px] leading-[2.8] font-light text-zinc-600 relative z-10">
+                                        {member === 'iori' ? (
+                                            <>
+                                                <p className="text-zinc-900 font-black text-3xl border-l-8 border-iori pl-8 mb-12 uppercase italic font-display text-iori">The Voice of =LOVE.</p>
+                                                <p>変幻自在な歌唱スキルと、観る者を射抜く圧倒的な目力。野口衣織が立つステージには、常に魂の咆哮が響いている。クールで中性的な美しさを持ちながら、アニメへの深い造詣やメンバーに見せる笑顔の落差。そのギャップこそが、彼女を語る上で欠かせない要素だ。</p>
+                                                <p>楽曲の世界観に完全に身を投じる憑依型パフォーマー。その存在は楽曲に強烈な物語性を与え、グループ全体の表現力を次のレベルへと引き上げ続けている。</p>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <p className="text-zinc-900 font-black text-3xl border-l-8 border-hana pl-8 mb-12 uppercase italic font-display text-hana">The Multi-Talented Muse.</p>
+                                                <p>イコラブの太陽。彼女がステージに現れるだけで、場には明るい光が灯る。しかし真の凄みはそのシアトリカルな表現にある。美しい所作と一瞬で役を支配する没入感は、他の追随を許さない。</p>
+                                                <p>イラスト、ブログ、グッズデザイン。クリエイティブな才能を爆発させ続ける彼女は、グループ随一の表現の職人だ。知れば知るほど底なしの魅力を持つ、唯一無二の表現者である。</p>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    <footer className="bg-deep text-white py-48 px-8 text-center mt-20 relative overflow-hidden">
+                        <div className="absolute inset-0 opacity-10 pointer-events-none"><span className="absolute top-10 left-10 text-9xl font-display italic font-black">IORI</span><span className="absolute bottom-10 right-10 text-9xl font-display italic font-black">HANA</span></div>
+                        <div className="relative z-10 space-y-12">
+                            <div className="text-[11px] font-black tracking-[1.4em] opacity-20 mb-4 uppercase">Curated and Produced by</div>
+                            <div className="text-6xl md:text-8xl font-display italic font-black text-gold mb-16 underline decoration-white/10 decoration-8 underline-offset-8">
+                                <a href="https://twitter.com/iohana_momiji" target="_blank" className="signature-link">いろは紅葉</a>
+                            </div>
+                            <p className="text-[11px] font-bold tracking-[0.5em] opacity-30 max-w-2xl mx-auto leading-relaxed uppercase">Dedicated to the unparalleled artistry of Iori Noguchi and Hana Oba.</p>
+                            <div className="flex flex-col items-center gap-4">
+                                <a href="https://twitter.com/iohana_momiji" target="_blank" className="text-[11px] font-black opacity-30 tracking-[0.8em] uppercase hover:opacity-80 transition-opacity">X:@iohana_momiji</a>
+                                <span className="text-[9px] font-black opacity-20 tracking-[0.5em] uppercase">#イコラブ</span>
                             </div>
                         </div>
-                        <h1 className="text-3xl md:text-5xl font-black font-['M_PLUS_Rounded_1c'] mb-2 drop-shadow-md">今日も明日もはなまる！💮</h1>
-                        <p className="text-xs md:text-sm font-bold bg-white/20 inline-block px-4 py-1 rounded-full backdrop-blur-md border border-white/30">＝LOVE 大場花菜 非公式布教ガイド | by いろは紅葉</p>
-                    </header>
-                    <NavMenu activePage={activePage} setActivePage={setActivePage} />
-                    <div className="flex-1 bg-[#FFFBF5]">
-                        {activePage === 'home' && <HomeContent data={filteredData} activeCategory={activeCategory} setActiveCategory={setActiveCategory} activeTag={activeTag} setActiveTag={setActiveTag} toggleWatched={toggleWatched} isWatched={isWatched} />}
-                        {activePage === 'profile' && <Profile />}
-                        {activePage === 'concept' && <Concept />}
-                    </div>
-                    <footer className="p-8 text-center text-[10px] text-gray-400 bg-gray-50">
-                        <p>© 2026 Hana Oba Fan Guide | Created by いろは紅葉 (@iohana_momiji)</p>
-                        <p className="mt-2">当サイトは個人によるファンサイトです。公式とは一切関係ありません。</p>
                     </footer>
                 </div>
             );
@@ -282,5 +233,4 @@
         root.render(<App />);
     </script>
 </body>
-
 </html>
