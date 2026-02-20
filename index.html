@@ -32,17 +32,15 @@
         }
     </script>
     <style>
-        body { background-color: #fcfcfc; color: #0a0a0a; font-family: 'Noto Sans JP', sans-serif; line-height: 1.8; }
+        body { background-color: #fcfcfc; color: #0a0a0a; font-family: 'Noto Sans JP', sans-serif; line-height: 1.8; overflow-x: hidden; }
         .glass-nav { background: rgba(252, 252, 252, 0.95); backdrop-filter: blur(25px); }
-        .dual-bg { background: linear-gradient(90deg, rgba(147,51,234,0.03) 0%, rgba(255,140,0,0.03) 100%); }
+        .dual-bg { background: linear-gradient(90deg, rgba(147,51,234,0.02) 0%, rgba(255,140,0,0.02) 100%); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .animate-in { animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .thumb-sharp { image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; }
+        .thumb-sharp { image-rendering: -webkit-optimize-contrast; }
         ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #9333ea, #FF8C00); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #121212; border-radius: 10px; }
         .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        
-        /* シグネチャー・リンク */
         .signature-link { transition: all 0.5s ease; position: relative; }
         .signature-link:hover { color: #FF8C00; text-shadow: 0 0 20px rgba(255, 140, 0, 0.2); }
     </style>
@@ -53,48 +51,53 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
+        const MEMBERS = [
+            { id: 'iori', name: '野口 衣織', en: 'Iori Noguchi', color: 'text-iori', bg: 'bg-iori', border: 'border-iori', ig: 'noguchi_iori_', x: 'noguchi_iori', birth: '2000.04.26', place: '茨城県' },
+            { id: 'hana', name: '大場 花菜', en: 'Hana Oba', color: 'text-hana', bg: 'bg-hana', border: 'border-hana', ig: 'hana_oba_24', x: 'hana_oba', birth: '2000.02.04', place: '埼玉県' }
+        ];
+
         const VIDEO_DATA = [
             // 野口衣織 Selection
-            { id: 1, member: 'iori', type: "MV", title: "呪って呪って", url: "cyRZGtNx_a4", comment: "冷徹な眼光と魂を宿した指先の表現。イコラブが持つ表現力の深淵を定義し直した衝撃作。" },
-            { id: 2, member: 'iori', type: "Live", title: "狂想カタストロフィ（有明アリーナ）", url: "bovO70Ml0gE", comment: "孤独を芸術へ。アリーナの真ん中で独り舞う姿は、アイドルの枠を超えた一つの伝説。" },
-            { id: 3, member: 'iori', type: "MV", title: "手遅れcaution", url: "w0N0TiOlAY0", comment: "憑依型パフォーマーとしての名を世に知らしめた原点。一瞬で空気を掌握する気迫。" },
-            { id: 4, member: 'iori', type: "MV", title: "拝啓 貴方様", url: "PFBhWKdjBTQ", comment: "昭和歌謡の哀愁を纏うソロ。唯一無二の歌唱力と、引きずり込まれるような妖艶な世界。" },
-            { id: 5, member: 'iori', type: "Live", title: "だからとて（代々木第一体育館）", url: "khSDmjXGjkE", comment: "切なさを叫ぶ。生歌ならではの熱量が魂を揺さぶり、聴く者を衣織沼へ深く引き摺り込む。" },
-            { id: 6, member: 'iori', type: "MV", title: "君と私の歌", url: "juImxVpogRY", comment: "ファンへの愛を綴るセンター曲。力強さと優しさが溶け合う、彼女が持つ王道の輝き。" },
-            { id: 7, member: 'iori', type: "MV", title: "Be Selfish", url: "suf7S4AKdmY", comment: "自分らしさの肯定。凛とした佇まいと強いメッセージ性を描き出す現代的な美。" },
-            { id: 8, member: 'iori', type: "Live", title: "呪って呪って (有明アリーナ)", url: "T8zqbIvO_9M", comment: "会場全体を圧倒する覇気。ライブでこそ輝く、野生的なまでの気迫が堪能できる。" },
-            { id: 9, member: 'iori', type: "Focus", title: "絶対アイドル辞めないで", url: "olmZqgAYUTk", comment: "全編にわたって絵になる、究極のアイドルとしての姿を捉えた名映像。" },
-            { id: 10, member: 'iori', type: "Cover", title: "うっせぇわ", url: "rMT4X8zR7qY", comment: "変幻自在な声の魔術師としての真骨頂。一度聴けば逃げられない圧倒的な歌唱。" },
-            { id: 11, member: 'iori', type: "Live", title: "手遅れcaution (横浜アリーナ)", url: "uMpEyaRmiy8", comment: "伝説の落ちサビ。一瞬の静寂が生む圧倒的カタルシスは、生歌の強さを物語る。" },
-            { id: 12, member: 'iori', type: "Dance", title: "Queens", url: "Pyts1pc0u1A", comment: "覇者の風格を纏う。ダンスのキレと重圧感のある視線が、観る者を世界観へ引き込む。" },
-            { id: 13, member: 'iori', type: "MV", title: "虹の素", url: "qoPqgiQVhok", comment: "歌声がぶつかり合い、溶け合うエモーショナルな旋律。いかりんぐの絆が結実した一曲。" },
-            { id: 14, member: 'iori', type: "Live", title: "記憶のどこかで", url: "FCti36ZBQBU", comment: "初期の名曲から溢れる情熱。成長し続ける彼女のパフォーマンスの歴史を感じるステージ。" },
-            { id: 15, member: 'iori', type: "Dance", title: "惑星ループ", url: "28P2ZI-aweU", comment: "ギャップの極致。クールな彼女が見せる至高の可愛さに撃ち抜かれる名場面。" },
+            { id: 'i-1', member: 'iori', type: "MV", title: "呪って呪って", url: "cyRZGtNx_a4", comment: "冷徹な眼光と魂を宿した指先の表現だ。イコラブが持つ表現力の深淵を定義し直した衝撃作である。" },
+            { id: 'i-2', member: 'iori', type: "Live", title: "狂想カタストロフィ（有明アリーナ）", url: "bovO70Ml0gE", comment: "孤独を芸術へ。アリーナの静寂を独りで支配する、アイドルの枠を超えた一つの到達点だ。" },
+            { id: 'i-3', member: 'iori', type: "MV", title: "手遅れcaution", url: "w0N0TiOlAY0", comment: "憑依型パフォーマーとしての名を世に知らしめた原点だ。一瞬で空気を掌握する気迫は必見である。" },
+            { id: 'i-4', member: 'iori', type: "MV", title: "拝啓 貴方様", url: "PFBhWKdjBTQ", comment: "昭和歌謡の哀愁を纏うソロ曲だ。唯一無二の歌唱力と妖艶な世界が聴く者を惹きつけて離さない。" },
+            { id: 'i-5', member: 'iori', type: "Live", title: "だからとて（代々木第一体育館）", url: "khSDmjXGjkE", comment: "生歌ならではの震える熱量。聴く者を衣織沼へ深く引き摺り込む、魂の咆哮だ。" },
+            { id: 'i-6', member: 'iori', type: "MV", title: "君と私の歌", url: "juImxVpogRY", comment: "センターで放つ王道の煌めき。ファンへの愛が力強さと優しさになって溶け合う一曲である。" },
+            { id: 'i-7', member: 'iori', type: "MV", title: "Be Selfish", url: "suf7S4AKdmY", comment: "自分らしさの肯定。凛とした佇まいと強いメッセージ性を描き出す現代的な美の象徴だ。" },
+            { id: 'i-8', member: 'iori', type: "Live", title: "呪って呪って (有明アリーナ)", url: "T8zqbIvO_9M", comment: "会場全体を圧倒する覇気。ライブでこそ輝く、野生的なまでの気迫を体感せよ。" },
+            { id: 'i-9', member: 'iori', type: "Focus", title: "絶対アイドル辞めないで", url: "olmZqgAYUTk", comment: "究極のアイドル像だ。彼女の持つ絶対的なポテンシャルと華やかさを凝縮した名映像である。" },
+            { id: 'i-10', member: 'iori', type: "Cover", title: "うっせぇわ", url: "rMT4X8zR7qY", comment: "変幻自在な声の魔術師としての真骨頂。一度聴けば逃げられない圧倒的な歌唱だ。" },
+            { id: 'i-11', member: 'iori', type: "Live", title: "手遅れcaution (横浜アリーナ)", url: "uMpEyaRmiy8", comment: "伝説の落ちサビ。一瞬の静寂が生む圧倒的カタルシスは、生歌の強さを物語る。" },
+            { id: 'i-12', member: 'iori', type: "Dance", title: "Queens", url: "Pyts1pc0u1A", comment: "覇者の風格を纏い舞う。ダンスのキレと重圧感のある視線が、観る者を世界観へ引き込む。" },
+            { id: 'i-13', member: 'iori', type: "MV", title: "虹の素", url: "qoPqgiQVhok", comment: "いかりんぐの旋律。二人の歌声がぶつかり合い溶け合う、エモーショナルな瞬間だ。" },
+            { id: 'i-14', member: 'iori', type: "Live", title: "記憶のどこかで（代々木第一体育館）", url: "FCti36ZBQBU", comment: "初期の名曲から溢れる情熱。成長し続ける彼女のパフォーマンスの歴史を感じるステージだ。" },
+            { id: 'i-15', member: 'iori', type: "Dance", title: "惑星ループ", url: "28P2ZI-aweU", comment: "ギャップの極致。クールな彼女が見せる至高の可愛さに撃ち抜かれる名場面である。" },
 
             // 大場花菜 Selection
-            { id: 16, member: 'hana', type: "MV", title: "笑顔のレシピ", url: "LKwERkGBiog", comment: "初センター。東京ドームへの約束を胸に、メンバーとの絆を歌い上げた彼女の聖域。" },
-            { id: 17, member: 'hana', type: "MV", title: "ラブロケ", url: "u_Y91a-uILM", comment: "宇宙的可愛さの炸裂。ポップな色彩と表情管理が完璧にマッチしたクリエイティブな一曲。" },
-            { id: 18, member: 'hana', type: "MV", title: "Sweetest girl", url: "poF7fpHzGvQ", comment: "女子力の魔法。おしゃれを愛する感性が息づく、ガーリーで愛らしい世界観。" },
-            { id: 19, member: 'hana', type: "MV", title: "お姫様にしてよ！", url: "oCb89c0MDVk", comment: "全女子への応援歌。シアトリカルな演技力が光り、コメディエンヌの才能も堪能できる。" },
-            { id: 20, member: 'hana', type: "MV", title: "Poison Girl", url: "2l7yxbJ2Eqc", comment: "甘美な毒。大人びた表現で見せるアーティストとしての新たな一面。指先の所作が美しい。" },
-            { id: 21, member: 'hana', type: "MV", title: "狂想カタストロフィ", url: "RG_B3gfOzLo", comment: "シアトリカルの深淵。一曲の中で一人の人生を演じきる。宝塚への愛が昇華された極み。" },
-            { id: 22, member: 'hana', type: "Live", title: "祝祭 (さいたまスーパーアリーナ)", url: "497KgIJTgSs", comment: "執事姿での名演。舞台人としての本領発揮。ファンを虜にした圧巻の役作りをその目に。" },
-            { id: 23, member: 'hana', type: "Live", title: "ナツマトペ (さいたまスーパーアリーナ)", url: "J5M3vX9ioIU", comment: "会場を幸せにするハッピーオーラ。太陽のような彼女がいるだけで、景色が輝き出す。" },
-            { id: 24, member: 'hana', type: "Focus", title: "とくべチュ、して", url: "PnNYR8DjF_Y", comment: "最新のはなまる。一瞬のウィンクも見逃せない、可愛さの過剰摂取注意報。" },
-            { id: 25, member: 'hana', type: "Dance", title: "呪って呪って (Dance)", url: "K-3LQ9A2ecY", comment: "正確無比なリズム感。身体の止めと流しが描くシルエットの美しさは職人技。" },
-            { id: 26, member: 'hana', type: "Dance", title: "この空がトリガー", url: "ENs8yzQe7uk", comment: "指先まで神経が通った流麗なダンス。曲の物語を全身で読み解く、真の表現者の姿。" },
-            { id: 27, member: 'hana', type: "Live", title: "ラブクリエイト", url: "Ez3V5ipHdsI", comment: "多幸感の結晶。オレンジの海が最も似合う、メンバーとファンを愛する彼女の素顔。" },
-            { id: 28, member: 'hana', type: "Live", title: "超特急逃走中（代々木第一体育館）", url: "NjQPFUVKMCQ", comment: "全力のエンターテインメント。疾走感の中で光る最高の笑顔。観る者の心も晴れ渡る。" },
-            { id: 29, member: 'hana', type: "MV", title: "ドライブデート都内", url: "Y3aRUM8ebKE", comment: "お洒落なセンスと日常を彩る可愛さが詰まった一作。都内の景色に溶け込む姿が美しい。" },
-            { id: 30, member: 'hana', type: "MV", title: "ズッ友案件", url: "L7QUReMgJBY", comment: "ムードメーカーとしての温かさ。最高のハッピーを共有する、多幸感溢れる名曲。" }
+            { id: 'h-1', member: 'hana', type: "MV", title: "笑顔のレシピ", url: "LKwERkGBiog", comment: "リーダー山本杏奈の初センターを祝し、全員の絆と夢を歌い上げた聖域。彼女の慈愛に満ちた表情が光る。" },
+            { id: 'h-2', member: 'hana', type: "MV", title: "ラブロケ", url: "u_Y91a-uILM", comment: "宇宙的可愛さの炸裂。ポップな色彩と表情管理が完璧にマッチしたクリエイティブな一曲だ。" },
+            { id: 'h-3', member: 'hana', type: "MV", title: "Sweetest girl", url: "poF7fpHzGvQ", comment: "女子力の魔法。おしゃれを愛する感性が息づく、ガーリーで愛らしい世界観である。" },
+            { id: 'h-4', member: 'hana', type: "MV", title: "お姫様にしてよ！", url: "oCb89c0MDVk", comment: "全女子への応援歌。シアトリカルな演技力が光り、コメディエンヌの才能を堪能できる。" },
+            { id: 'h-5', member: 'hana', type: "MV", title: "Poison Girl", url: "2l7yxbJ2Eqc", comment: "甘美な毒。大人びた表現で見せるアーティストとしての新たな一面。指先の所作が美しい。" },
+            { id: 'h-6', member: 'hana', type: "MV", title: "狂想カタストロフィ", url: "RG_B3gfOzLo", comment: "シアトリカルの深淵。一曲の中で一人の人生を演じきる。宝塚への愛が昇華された極みだ。" },
+            { id: 'h-7', member: 'hana', type: "Live", title: "祝祭 (さいたまスーパーアリーナ)", url: "497KgIJTgSs", comment: "執事姿での名演。舞台人としての本領発揮だ。宝塚仕込みの所作が画面を支配する。" },
+            { id: 'h-8', member: 'hana', type: "Live", title: "ナツマトペ (さいたまスーパーアリーナ)", url: "J5M3vX9ioIU", comment: "会場を幸せにするハッピーオーラ。太陽のような彼女がいるだけで、景色が輝き出す。" },
+            { id: 'h-9', member: 'hana', type: "Focus", title: "とくべチュ、して", url: "PnNYR8DjF_Y", comment: "最新のはなまる。一瞬のウィンクも見逃せない、可愛さの過剰摂取注意報だ。" },
+            { id: 'h-10', member: 'hana', type: "Dance", title: "呪って呪って (Dance)", url: "K-3LQ9A2ecY", comment: "正確無比なリズム感。身体の止めと流しが描くシルエットの美しさは職人技である。" },
+            { id: 'h-11', member: 'hana', type: "Dance", title: "この空がトリガー", url: "ENs8yzQe7uk", comment: "指先まで神経が通った流麗なダンス。曲の物語を全身で読み解く、真の表現者の姿だ。" },
+            { id: 'h-12', member: 'hana', type: "Live", title: "ラブクリエイト", url: "Ez3V5ipHdsI", comment: "多幸感の結晶。オレンジの海が最も似合う、メンバーとファンを愛する彼女の素顔だ。" },
+            { id: 'h-13', member: 'hana', type: "Live", title: "超特急逃走中（代々木第一体育館）", url: "NjQPFUVKMCQ", comment: "全力のエンターテインメント。疾走感の中で光る最高の笑顔。観る者の心も晴れ渡る。" },
+            { id: 'h-14', member: 'hana', type: "MV", title: "ドライブデート都内", url: "Y3aRUM8ebKE", comment: "お洒落なセンスと日常を彩る可愛さが詰まった一作。都内の景色に溶け込む姿が美しい。" },
+            { id: 'h-15', member: 'hana', type: "MV", title: "ズッ友案件", url: "L7QUReMgJBY", comment: "ムードメーカーとしての温かさ。最高のハッピーを共有する、多幸感溢れる名曲である。" }
         ];
 
         const HighResThumbnail = ({ videoId, title }) => {
-            const [imgSrc, setImgSrc] = useState(`https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`);
+            const [src, setSrc] = useState(`https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`);
             return (
                 <div className="relative aspect-video overflow-hidden bg-zinc-200">
-                    <img src={imgSrc} alt={title} loading="lazy" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 thumb-sharp"
-                        onError={() => { if (!imgSrc.includes('hqdefault')) setImgSrc(`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`); }} />
+                    <img src={src} alt={title} loading="lazy" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 thumb-sharp"
+                        onError={() => { if (!src.includes('hqdefault')) setSrc(`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`); }} />
                 </div>
             );
         };
@@ -102,69 +105,71 @@
         const App = () => {
             const [member, setMember] = useState('iori'); 
             const [page, setPage] = useState('works');
-            const [watchedIori, setWatchedIori] = useState(() => JSON.parse(localStorage.getItem('watched_iori_final_v10') || '[]'));
-            const [watchedHana, setWatchedHana] = useState(() => JSON.parse(localStorage.getItem('watched_hana_final_v10') || '[]'));
+            const [watched, setWatched] = useState(() => JSON.parse(localStorage.getItem('el_dual_archive_vFinal') || '{}'));
 
-            useEffect(() => {
-                localStorage.setItem('watched_iori_final_v10', JSON.stringify(watchedIori));
-                localStorage.setItem('watched_hana_final_v10', JSON.stringify(watchedHana));
-            }, [watchedIori, watchedHana]);
+            useEffect(() => { localStorage.setItem('el_dual_archive_vFinal', JSON.stringify(watched)); }, [watched]);
+
+            const current = MEMBERS.find(m => m.id === member);
+            const videos = VIDEO_DATA.filter(v => v.member === member);
+            const score = Math.round(((watched[member]?.length || 0) / videos.length) * 100);
 
             const toggle = (id) => {
-                if (member === 'iori') setWatchedIori(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
-                else setWatchedHana(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
+                const updated = { ...watched };
+                if (!updated[member]) updated[member] = [];
+                if (updated[member].includes(id)) updated[member] = updated[member].filter(i => i !== id);
+                else updated[member] = [...updated[member], id];
+                setWatched(updated);
             };
 
-            const iScore = Math.round((watchedIori.length / VIDEO_DATA.filter(v => v.member === 'iori').length) * 100);
-            const hScore = Math.round((watchedHana.length / VIDEO_DATA.filter(v => v.member === 'hana').length) * 100);
-            const accent = member === 'iori' ? 'text-iori' : 'text-hana';
-
             return (
-                <div className="min-h-screen dual-bg selection:bg-deep selection:text-white">
-                    <nav className="fixed top-0 w-full z-[9999] glass-nav border-b border-zinc-100/50 px-8 py-5 flex justify-between items-center">
-                        <div className="flex items-center gap-6">
-                            <button onClick={() => setMember('iori')} className={`text-2xl font-display font-black italic tracking-tighter transition-all ${member === 'iori' ? 'text-iori scale-110' : 'opacity-20'}`}>IORI.</button>
-                            <span className="text-zinc-200">/</span>
-                            <button onClick={() => setMember('hana')} className={`text-2xl font-display font-black italic tracking-tighter transition-all ${member === 'hana' ? 'text-hana scale-110' : 'opacity-20'}`}>HANA.</button>
+                <div className="min-h-screen dual-bg selection:bg-deep selection:text-white pb-40">
+                    
+                    {/* Header Nav: Direct Switch */}
+                    <nav className="fixed top-0 w-full z-[1000] glass-nav border-b border-zinc-100/50 px-8 py-5 flex justify-between items-center">
+                        <div className="flex items-center gap-8">
+                            {MEMBERS.map(m => (
+                                <button key={m.id} onClick={() => setMember(m.id)} className={`text-2xl font-display font-black italic tracking-tighter transition-all ${member === m.id ? `${m.color} scale-110` : 'opacity-20 hover:opacity-50'}`}>
+                                    {m.id === 'iori' ? 'IORI.' : 'HANA.'}
+                                </button>
+                            ))}
                         </div>
                         <div className="flex gap-10 text-[11px] font-bold tracking-[0.3em] uppercase">
-                            <button onClick={() => setPage('about')} className={page === 'about' ? accent : 'opacity-30'}>About</button>
-                            <button onClick={() => setPage('works')} className={page === 'works' ? accent : 'opacity-30'}>Archive</button>
+                            <button onClick={() => setPage('about')} className={page === 'about' ? current.color : 'opacity-30'}>Profile</button>
+                            <button onClick={() => setPage('works')} className={page === 'works' ? current.color : 'opacity-30'}>Archive</button>
                         </div>
                     </nav>
 
-                    <div className="fixed bottom-10 left-10 z-[50] flex flex-col gap-6 animate-in">
-                        <div className="bg-white/95 backdrop-blur-md p-5 border-l-4 border-iori shadow-xl">
-                            <div className="text-[9px] font-black text-iori tracking-widest mb-2 uppercase">Iori Depth</div>
-                            <div className="w-44 h-1 bg-zinc-100 rounded-full overflow-hidden"><div className="h-full bg-iori transition-all duration-1000" style={{width: `${iScore}%`}}></div></div>
-                            <div className="text-right text-xs font-display italic font-black mt-1 text-iori">{iScore}%</div>
-                        </div>
-                        <div className="bg-white/95 backdrop-blur-md p-5 border-l-4 border-hana shadow-xl">
-                            <div className="text-[9px] font-black text-hana tracking-widest mb-2 uppercase">Hana Bloom</div>
-                            <div className="w-44 h-1 bg-zinc-100 rounded-full overflow-hidden"><div className="h-full bg-hana transition-all duration-1000" style={{width: `${hScore}%`}}></div></div>
-                            <div className="text-right text-xs font-display italic font-black mt-1 text-hana">{hScore}%</div>
+                    {/* Member-Specific Barometer (Dynamic) */}
+                    <div className="fixed bottom-12 left-12 z-[50] animate-in">
+                        <div className={`bg-white/95 backdrop-blur-md p-6 border-l-8 shadow-2xl ${current.border}`}>
+                            <div className={`text-[10px] font-black tracking-widest mb-2 uppercase ${current.color}`}>{current.name} Experience</div>
+                            <div className="w-52 h-1.5 bg-zinc-100 rounded-full overflow-hidden">
+                                <div className={`h-full ${current.bg} transition-all duration-1000`} style={{width: `${score}%`}}></div>
+                            </div>
+                            <div className="text-right text-sm font-display italic font-black mt-2 text-zinc-900">{score}% Explored</div>
                         </div>
                     </div>
 
-                    <div className="container mx-auto px-6 pt-44 pb-48">
+                    <div className="container mx-auto px-6 pt-44">
                         {page === 'works' && (
                             <div className="animate-in">
-                                <header className="text-center mb-36">
+                                <header className="text-center mb-40">
                                     <span className="text-xs font-bold text-gold tracking-[0.8em] uppercase mb-6 block">Selection curated by いろは紅葉</span>
-                                    <h1 className="text-6xl md:text-9xl font-display italic font-black tracking-tighter leading-none">{member === 'iori' ? 'The Voice of Passion' : 'The Muse of Art'}</h1>
+                                    <h1 className="text-6xl md:text-9xl font-display italic font-black tracking-tighter leading-none mb-4">{current.en}</h1>
+                                    <div className={`w-24 h-1 mx-auto mt-16 opacity-30 ${current.bg}`}></div>
                                 </header>
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-32">
-                                    {VIDEO_DATA.filter(v => v.member === member).map(v => (
+                                    {videos.map(v => (
                                         <div key={v.id} className="group">
                                             <div className="relative mb-10">
                                                 <HighResThumbnail videoId={v.url} title={v.title} />
                                                 <div className="absolute -top-5 -left-5 bg-deep text-white text-[10px] font-black px-6 py-2 tracking-widest uppercase">{v.type}</div>
-                                                <button onClick={() => toggle(v.id)} className={`absolute -bottom-6 -right-6 w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-2xl transition-all transform hover:scale-110 ${(member === 'iori' ? watchedIori : watchedHana).includes(v.id) ? (member === 'iori' ? 'bg-iori' : 'bg-hana') + ' text-white ring-8 ring-white' : 'bg-white text-zinc-300'}`}>{(member === 'iori' ? watchedIori : watchedHana).includes(v.id) ? '💮' : '＋'}</button>
+                                                <button onClick={() => toggle(v.id)} className={`absolute -bottom-6 -right-6 w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-2xl transition-all transform hover:scale-110 ${(watched[member] || []).includes(v.id) ? `${current.bg} text-white ring-8 ring-white` : 'bg-white text-zinc-300'}`}>{(watched[member] || []).includes(v.id) ? '💮' : '＋'}</button>
                                             </div>
                                             <div className="space-y-6">
-                                                <h3 className={`text-3xl font-serif font-black transition-colors ${member === 'iori' ? 'group-hover:text-iori' : 'group-hover:text-hana'}`}>{v.title}</h3>
+                                                <h3 className={`text-3xl font-serif font-black transition-colors group-hover:${current.color}`}>{v.title}</h3>
                                                 <p className="text-[15px] text-zinc-500 leading-[2.2] font-light line-clamp-3">{v.comment}</p>
-                                                <a href={`https://www.youtube.com/watch?v=${v.url}`} target="_blank" className={`inline-block text-[11px] font-black tracking-[0.3em] border-b-2 pb-1 hover:opacity-50 ${member === 'iori' ? 'border-iori' : 'border-hana'}`}>VIEW ON YOUTUBE</a>
+                                                <a href={`https://www.youtube.com/watch?v=${v.url}`} target="_blank" className={`inline-block text-[11px] font-black tracking-[0.3em] border-b-2 pb-1 hover:opacity-50 transition-opacity ${current.border}`}>VIEW ON YOUTUBE</a>
                                             </div>
                                         </div>
                                     ))}
@@ -173,37 +178,30 @@
                         )}
 
                         {page === 'about' && (
-                            <div className="max-w-6xl mx-auto animate-in space-y-20">
-                                <div className="bg-white p-12 md:p-24 border border-zinc-100 shadow-2xl flex flex-col md:flex-row gap-24 items-start relative overflow-hidden">
-                                    <div className={`absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-${member === 'iori' ? 'iori' : 'hana'}/10 to-transparent rounded-full blur-3xl -mr-32 -mt-32`}></div>
+                            <div className="max-w-6xl mx-auto animate-in space-y-24">
+                                <div className="bg-white p-16 md:p-24 border border-zinc-100 shadow-2xl flex flex-col md:flex-row gap-24 items-start relative overflow-hidden">
+                                    <div className={`absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-${current.id}/10 to-transparent rounded-full blur-3xl -mr-32 -mt-32`}></div>
                                     <div className="md:w-5/12 space-y-16 relative z-10">
-                                        <h2 className={`text-7xl font-serif font-black leading-tight ${accent}`}>{member === 'iori' ? '野口 衣織' : '大場 花菜'}<br/><span className="text-4xl text-zinc-900 opacity-10 font-sans italic tracking-tighter uppercase">{member === 'iori' ? 'Iori Noguchi' : 'Hana Oba'}</span></h2>
+                                        <h2 className={`text-7xl font-serif font-black leading-tight ${current.color}`}>{current.name}<br/><span className="text-4xl text-zinc-900 opacity-10 font-sans italic tracking-tighter uppercase">{current.en}</span></h2>
                                         <ul className="space-y-8 text-sm">
-                                            <li className="flex justify-between border-b border-zinc-50 pb-4"><span className="text-gold font-bold tracking-widest uppercase">Birthday</span><span className="font-bold">{member === 'iori' ? '2000.04.26' : '2000.02.04'}</span></li>
-                                            <li className="flex justify-between border-b border-zinc-50 pb-4"><span className="text-gold font-bold tracking-widest uppercase">Birthplace</span><span className="font-bold">{member === 'iori' ? '茨城県' : '埼玉県'}</span></li>
-                                            <li className="flex justify-between border-b border-zinc-50 pb-4"><span className="text-gold font-bold tracking-widest uppercase">Color</span><span className={`font-black ${accent}`}>{member === 'iori' ? 'Purple' : 'Orange'}</span></li>
+                                            <li className="flex justify-between border-b border-zinc-50 pb-4"><span className="text-gold font-bold tracking-widest uppercase">Birthday</span><span className="font-bold">{current.birth}</span></li>
+                                            <li className="flex justify-between border-b border-zinc-50 pb-4"><span className="text-gold font-bold tracking-widest uppercase">Birthplace</span><span className="font-bold">{current.place}</span></li>
+                                            <li className="flex justify-between border-b border-zinc-50 pb-4"><span className="text-gold font-bold tracking-widest uppercase">Color</span><span className={`font-black ${current.color}`}>{current.id === 'iori' ? 'Purple' : 'Orange'}</span></li>
                                         </ul>
                                         <div className="pt-10 border-t border-zinc-50 space-y-4 text-center">
-                                            <h3 className={`text-xl font-serif font-black mb-4 ${accent}`}>Official Accounts</h3>
-                                            <div className="grid grid-cols-1 gap-4">
-                                                <a href={member === 'iori' ? 'https://twitter.com/noguchi_iori' : 'https://twitter.com/hana_oba'} target="_blank" className={`border-2 px-8 py-4 rounded-full font-black text-[11px] tracking-widest hover:text-white transition-all ${member === 'iori' ? 'border-iori text-iori hover:bg-iori' : 'border-hana text-hana hover:bg-hana'}`}>X (Twitter) →</a>
-                                                <a href={member === 'iori' ? 'https://www.instagram.com/noguchi_iori_/' : 'https://www.instagram.com/hana_oba_/'} target="_blank" className={`border-2 px-8 py-4 rounded-full font-black text-[11px] tracking-widest hover:text-white transition-all ${member === 'iori' ? 'border-iori text-iori hover:bg-iori' : 'border-hana text-hana hover:bg-hana'}`}>Instagram →</a>
+                                            <h3 className={`text-xl font-serif font-black mb-4 ${current.color}`}>Official Accounts</h3>
+                                            <div className="grid grid-cols-1 gap-4 text-center">
+                                                <a href={`https://twitter.com/${current.x}`} target="_blank" className={`border-2 px-8 py-4 rounded-full font-black text-[11px] tracking-widest hover:text-white transition-all ${current.border} ${current.color} hover:${current.bg}`}>X (Twitter) →</a>
+                                                <a href={`https://www.instagram.com/${current.ig}/`} target="_blank" className={`border-2 px-8 py-4 rounded-full font-black text-[11px] tracking-widest hover:text-white transition-all ${current.border} ${current.color} hover:${current.bg}`}>Instagram →</a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="md:w-7/12 text-[18px] leading-[2.8] font-light text-zinc-600 relative z-10">
-                                        {member === 'iori' ? (
-                                            <>
-                                                <p className="text-zinc-900 font-black text-3xl border-l-8 border-iori pl-8 mb-12 uppercase italic font-display text-iori">The Voice of =LOVE.</p>
-                                                <p>変幻自在な歌唱スキルと、観る者を射抜く圧倒的な目力。野口衣織が立つステージには、常に魂の咆哮が響いている。クールで中性的な美しさを持ちながら、アニメへの深い造詣やメンバーに見せる笑顔の落差。そのギャップこそが、彼女を語る上で欠かせない要素だ。</p>
-                                                <p>楽曲の世界観に完全に身を投じる憑依型パフォーマー。その存在は楽曲に強烈な物語性を与え、グループ全体の表現力を次のレベルへと引き上げ続けている。</p>
-                                            </>
+                                    <div className="md:w-7/12 text-[19px] leading-[2.8] font-light text-zinc-600 relative z-10 space-y-8">
+                                        <p className={`text-zinc-900 font-black text-3xl border-l-8 pl-8 mb-12 uppercase italic font-display ${current.border}`}>The Essential Muse.</p>
+                                        {current.id === 'iori' ? (
+                                            <p>彼女の魅力はなんといっても変幻自在な歌唱スキルと観る者を射抜く圧倒的な目力だ。衣織が立つステージには常に魂の咆哮が響いている。クールで中性的な美しさを持ちながら、アニメへの深い造詣やメンバーに見せる笑顔の落差は沼確定要素。そのギャップこそが彼女を語る上で欠かせない要素である。楽曲の世界観に完全に身を投じる憑依型パフォーマーであり、グループ全体の表現力を次のレベルへと引き上げ続けている。</p>
                                         ) : (
-                                            <>
-                                                <p className="text-zinc-900 font-black text-3xl border-l-8 border-hana pl-8 mb-12 uppercase italic font-display text-hana">The Multi-Talented Muse.</p>
-                                                <p>イコラブの太陽。彼女がステージに現れるだけで、場には明るい光が灯る。しかし真の凄みはそのシアトリカルな表現にある。美しい所作と一瞬で役を支配する没入感は、他の追随を許さない。</p>
-                                                <p>イラスト、ブログ、グッズデザイン。クリエイティブな才能を爆発させ続ける彼女は、グループ随一の表現の職人だ。知れば知るほど底なしの魅力を持つ、唯一無二の表現者である。</p>
-                                            </>
+                                            <p>彼女こそイコラブの太陽だ。花菜ちゃんがステージに現れるだけで、場には明るい光が灯る。しかし、真の凄みはそのシアトリカルな表現にある。美しい所作と一瞬で役を支配する没入感は他の追随を許さない。イラストやブログ制作までこなす表現の職人であり、知れば知るほど底なしの魅力を持つ、唯一無二のアーティストである。</p>
                                         )}
                                     </div>
                                 </div>
@@ -212,16 +210,16 @@
                     </div>
 
                     <footer className="bg-deep text-white py-48 px-8 text-center mt-20 relative overflow-hidden">
-                        <div className="absolute inset-0 opacity-10 pointer-events-none"><span className="absolute top-10 left-10 text-9xl font-display italic font-black">IORI</span><span className="absolute bottom-10 right-10 text-9xl font-display italic font-black">HANA</span></div>
+                        <div className="absolute inset-0 opacity-10 pointer-events-none font-display italic font-black text-9xl flex flex-wrap gap-10 items-center justify-center uppercase"><span>IORI</span><span>HANA</span></div>
                         <div className="relative z-10 space-y-12">
-                            <div className="text-[11px] font-black tracking-[1.4em] opacity-20 mb-4 uppercase">Curated and Produced by</div>
+                            <div className="text-[11px] font-black tracking-[1.4em] opacity-20 mb-4 uppercase text-center text-white">Curated and Produced by いろは紅葉</div>
                             <div className="text-6xl md:text-8xl font-display italic font-black text-gold mb-16 underline decoration-white/10 decoration-8 underline-offset-8">
                                 <a href="https://twitter.com/iohana_momiji" target="_blank" className="signature-link">いろは紅葉</a>
                             </div>
-                            <p className="text-[11px] font-bold tracking-[0.5em] opacity-30 max-w-2xl mx-auto leading-relaxed uppercase">Dedicated to the unparalleled artistry of Iori Noguchi and Hana Oba.</p>
-                            <div className="flex flex-col items-center gap-4">
-                                <a href="https://twitter.com/iohana_momiji" target="_blank" className="text-[11px] font-black opacity-30 tracking-[0.8em] uppercase hover:opacity-80 transition-opacity">X:@iohana_momiji</a>
-                                <span className="text-[9px] font-black opacity-20 tracking-[0.5em] uppercase">#イコラブ</span>
+                            <p className="text-[11px] font-bold tracking-[0.5em] opacity-30 max-w-2xl mx-auto leading-relaxed uppercase text-center">Dedicated to the unparalleled artistry of Iori Noguchi and Hana Oba.</p>
+                            <div className="flex flex-col items-center gap-4 text-[10px] font-black opacity-30 tracking-[0.8em] uppercase">
+                                <a href="https://twitter.com/iohana_momiji" target="_blank" className="hover:opacity-100 transition-opacity">X:@iohana_momiji</a>
+                                <span>#イコラブ</span>
                             </div>
                         </div>
                     </footer>
@@ -234,7 +232,3 @@
     </script>
 </body>
 </html>
-
-
-
-
